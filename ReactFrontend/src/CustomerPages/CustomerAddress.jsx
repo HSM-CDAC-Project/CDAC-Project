@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { GetAllCustomerAddress, DeleteCustomerAddress, AddCustomerAddress, UpdateCustomerAddress } from '../services/Customer';
 import { Card, Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,20 +18,25 @@ function AddressList() {
     landmark: ''
   });
 
-  const customerId = localStorage.getItem('customerId');
+  
 
-  useEffect(() => {
-    loadAddressList();
-  }, [customerId]);
+  const customerId = localStorage.getItem('customerId')
 
-  const loadAddressList = async () => {
+  
+
+  const loadAddressList =  async () => {
     try {
       const result = await GetAllCustomerAddress(customerId);
+
       setAddresses(result);
     } catch (error) {
       console.error('Error loading addresses:', error);
     }
   };
+
+  useEffect(() => {
+    loadAddressList();
+  }, []);
 
   const handleDeleteAddress = async (addressId) => {
     try {

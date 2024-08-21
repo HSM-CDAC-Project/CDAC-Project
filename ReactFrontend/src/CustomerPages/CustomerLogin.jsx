@@ -32,7 +32,7 @@ function LoginCustomer() {
         // Store customerId in local storage
         // localStorage.setItem('customerId', customerId);
         localStorage.setItem('jwt', jwt);
-        localStorage.setItem('msg', msg);
+        localStorage.setItem('customerId', msg);
 
         // Dispatch login action to update global state
         dispatch(loginAction());

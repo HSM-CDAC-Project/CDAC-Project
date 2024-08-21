@@ -139,7 +139,6 @@ export async function getCustomerAddresses(customerId) {
 
         // http://localhost:8080/customers/C0002/address
         const response = await axios.get(`${config.url}/customers/${customerId}/address`, {
-            params: { customerId },
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -154,12 +153,24 @@ export async function getCustomerAddresses(customerId) {
 
 //for customer pages
 export async function GetAllCustomerAddress(customerId) {
-    const response = await axios.get(`${config.url}/customers/${customerId}/address`)
+    console.log('Function called with customerId:', customerId);
+
+    const response = await axios.get(`${config.url}/customers/${customerId}/address`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
+    console.log(response.data)
+
     return response.data
 }
 
 export async function DeleteCustomerAddress(addressId) {
-    const response = await axios.delete(`${config.url}/customers/address/delete/${addressId}`)
+    const response = await axios.delete(`${config.url}/customers/address/delete/${addressId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
     return response.data
 }
 
@@ -168,7 +179,11 @@ export async function AddCustomerAddress(addressLineOne,addressLineTwo,city,stat
     const body ={
        addressLineOne,addressLineTwo,city,state,country,zipCode,landmark
     }
-    const response = await axios.post(`${config.url}/customers/address/add/${customerId}`, body)
+    const response = await axios.post(`${config.url}/customers/address/add/${customerId}`, body, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
     return response.data
 }
 
@@ -177,7 +192,11 @@ export async function UpdateCustomerAddress(addressLineOne,addressLineTwo,city,s
     const body ={
         addressLineOne,addressLineTwo,city,state,country,zipCode,landmark
      }
-    const response = await axios.put(`${config.url}/customers/address/update/${addressId}`, body)
+    const response = await axios.put(`${config.url}/customers/address/update/${addressId}`, body, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
     return response.data
 }
 
@@ -200,11 +219,16 @@ export async function placeOrder(orderDetails) {
 
 
 export const UpdateCustomerEmail = async ({ customerId, email }) => {
+    const body = {
+        customerId,
+        email
+    }
     try {
-      const response = await axios.put(`${config.url}/customers/updateEmail`, {
-        customerId: customerId,
-        email: email
-      });
+      const response = await axios.put(`${config.url}/customers/updateEmail`,body, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
       return response.data;
     } catch (error) {
       console.error("Error updating customer's email:", error);
@@ -214,10 +238,14 @@ export const UpdateCustomerEmail = async ({ customerId, email }) => {
   
   // Function to update customer's mobile number
   export const UpdateCustomerMobileNo = async ({ customerId, mobileNo }) => {
+    const body ={
+        customerId, mobileNo
+    }
     try {
-      const response = await axios.put(`${config.url}/customers/updateMobileNo`, {
-        customerId: customerId,
-        mobileNo: mobileNo
+      const response = await axios.put(`${config.url}/customers/updateMobileNo`,body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
       });
       return response.data;
     } catch (error) {

@@ -11,7 +11,7 @@ const AdminSidebar = () => {
 
   const handleLogout = () => {
     // Clear session storage
-    sessionStorage.clear();
+    localStorage.clear();
 
     // Redirect to login page
     navigate('/admin-login');

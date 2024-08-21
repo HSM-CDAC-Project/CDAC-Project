@@ -25,11 +25,9 @@ function LoginPartner() {
       const result = await login(email, password)
       if (result) {
         
-        const{ partnerId } = result;
-        localStorage.setItem('partnerId',partnerId)
         const { jwt, msg } = result;
         localStorage.setItem('jwt', jwt);
-        localStorage.setItem('msg', msg);
+        localStorage.setItem('partnerId', msg);
 
 
         // set the login status to true

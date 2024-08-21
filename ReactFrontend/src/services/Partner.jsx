@@ -2,16 +2,15 @@ import axios from "axios";
 import config from "../config";
 
 const token = localStorage.getItem('jwt')
-const partnerId = "P0003"
+const partnerId = localStorage.getItem('partnerId')
+
+
 export async function login(email, password) {
     const body = {
         email,
         password,
     }
-    const response = await axios.post(`${config.url}/partner/login`,body, {
-      
-      // headers:{'jwt' : token}
-  })
+    const response = await axios.post(`${config.url}/partner/login`,body)
     return response.data
 }
 
@@ -24,7 +23,21 @@ export async function GetAllPartnerDetails(partnerId) {
     return response.data
 }
 
-
+export async function showProfileImage(partnerId) {
+  try {
+    const response = await axios.get(`${config.url}/partner/image/${partnerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: 'blob',
+    });
+    const imageProfileUrl = URL.createObjectURL(response.data);
+    return imageProfileUrl;
+  } catch (error) {
+    console.error('Error while downloading partner profile image:', error);
+    throw error;
+  }
+}
 
 
 export const registerPartner = async (partnerData, profileImage, idImage) => {
@@ -46,10 +59,13 @@ export const registerPartner = async (partnerData, profileImage, idImage) => {
 
 
 export const UpdatePartnerEmail = async ({ partnerId, email }) => {
+  const body = {
+    partnerId,
+    email,
+  }
   try {
-    const response = await axios.put(`${config.url}/partner/updateEmail`, {
-      partnerId: partnerId,
-      email: email,
+    const response = await axios.put(`${config.url}/partner/updateEmail`,body, {
+      
       headers: {
         Authorization: `Bearer ${token}`, // Instead of 'jwt' or just 'token'
     }
@@ -63,10 +79,12 @@ export const UpdatePartnerEmail = async ({ partnerId, email }) => {
 
 
 export const UpdatePartnerMobileNo = async ({ partnerId, mobileNo }) => {
+  const body = {
+    partnerId,
+    mobileNo,
+  }
   try {
-    const response = await axios.put(`${config.url}/partner/updateMobileNo`, {
-      partnerId: partnerId,
-      mobileNo: mobileNo,
+    const response = await axios.put(`${config.url}/partner/updateMobileNo`,body, {
       headers: {
         Authorization: `Bearer ${token}`, // Instead of 'jwt' or just 'token'
     }

@@ -54,11 +54,12 @@ public class SecurityConfig {
 				"/customers/cart/**","/customers/placeOrder").hasRole("CUSTOMER")
 		.antMatchers("/partner/updateEmail", "/partner/updateMobileNo", "/partner/details/**",
                 "/partner/updatepassword/**", "/partner/assignedorders/**",
-                "/partner/{detailsId}/updateStatus", "/partner/image/{partnerId}").hasRole("PARTNER")
+                "/partner/{detailsId}/updateStatus").hasRole("PARTNER")
 		.antMatchers("/admin/ActiveOrders", "/admin/partnerList", "/admin/partnerPendingList", 
-                "/admin/approve/*", "/admin/delete/", "/admin/updatepassword/*", 
-                "/admin/image/{partnerId}", "/admin/addPackage",
-                "/admin/**").hasRole("ADMIN")
+                "/admin/approve/**", "/admin/delete/**", "/admin/updatepassword/**", 
+                "/admin/image/{partnerId}", "/admin/addPackage").hasRole("ADMIN")
+		.antMatchers("/partner/image/{partnerId}").hasAnyRole("PARTNER", "ADMIN")
+
 		.anyRequest().authenticated()
 		.and()
 		//to tell spring sec : not to use HttpSession to store user's auth details

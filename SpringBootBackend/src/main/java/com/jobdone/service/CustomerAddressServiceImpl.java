@@ -28,25 +28,13 @@ public class CustomerAddressServiceImpl implements CustomerAddressService{
 	@Autowired
 	private ModelMapper modelMapper;
 
+	
 	@Override
 	public List<CustomerAddressDTO> getCustomerAddressById(String customerId) {
-//		Long customerId1 = Long.parseLong(customerId);
-		List<CustomerAddressDTO> addressList = customerAddressRepository.findByCustomerCustomerId(customerId)
-				.stream()
-				.map(customerAddress ->{
-					CustomerAddressDTO dto = new CustomerAddressDTO();
-					
-					dto.setId(customerAddress.getId());
-					dto.setAddressLineOne(customerAddress.getAddressLineOne());
-					dto.setAddressLineTwo(customerAddress.getAddressLineTwo());
-					dto.setCity(customerAddress.getCity());
-					dto.setState(customerAddress.getState());
-					dto.setCountry(customerAddress.getCountry());
-					dto.setZipCode(customerAddress.getZipCode());
-					dto.setLandmark(customerAddress.getLandmark());
-					return dto;})
+		List<CustomerAddress> addressList = customerAddressRepository.findByCustomerCustomerId(customerId);
+		return addressList.stream().map(customerAddress ->
+					modelMapper.map(customerAddress, CustomerAddressDTO.class))
 				.collect(Collectors.toList());
-		return addressList;
 	}
 
 	@Override

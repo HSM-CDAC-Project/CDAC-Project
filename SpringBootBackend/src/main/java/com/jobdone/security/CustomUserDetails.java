@@ -61,14 +61,26 @@ public class CustomUserDetails implements UserDetails {
         return null;
     }
 
-    @Override
+//    @Override
+//    public String getUsername() {
+//        if ("CUSTOMER".equals(userType)) {
+//            return customer.getEmail();
+//        } else if ("PARTNER".equals(userType)) {
+//            return partner.getEmail();
+//        }else if ("ADMIN".equals(userType)) {
+//            return admin.getEmail();
+//        }
+//        return null;
+//    }
+    
+  @Override
     public String getUsername() {
         if ("CUSTOMER".equals(userType)) {
-            return customer.getEmail();
+            return customer.getCustomerId();
         } else if ("PARTNER".equals(userType)) {
-            return partner.getEmail();
+            return partner.getPartnerId();
         }else if ("ADMIN".equals(userType)) {
-            return admin.getEmail();
+            return admin.getEmpId();
         }
         return null;
     }

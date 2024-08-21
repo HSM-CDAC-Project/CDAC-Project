@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getPendingApprovalList, approvePartner } from '../services/Admin';
+import { getPendingApprovalList, approvePartner, showIdImage, showProfileImage } from '../services/Admin';
 import { Card, Form, Row, Col, CardTitle, CardText, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import config from '../config';
@@ -11,8 +11,12 @@ function ApprovalPending() {
   const [filteredPartners, setFilteredPartners] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [imageUrls, setImageUrls] = useState({}); // State to store multiple partner image URLs
+  const [imageProfileUrl, setImageProfileUrl] = useState({});
+
   useEffect(() => {
     loadPartnersList();
+
   }, []);
 
   const loadPartnersList = async () => {
@@ -22,11 +26,16 @@ function ApprovalPending() {
         const partnersList = result.data;
         setPartners(partnersList);
         setFilteredPartners(partnersList);
+        // Download ID images for all partners once the list is loaded
+        partnersList.forEach(partner => {
+          downloadPartnerId(partner.partnerId); // Fetch and set image URLs
+          downloadPartnerProfile(partner.partnerId)
+        })
       } else {
         toast.error("Empty list");
       }
     } catch (error) {
-      console.error('Error loading partners list:', error);
+      // console.error('Error loading partners list:', error);
       toast.error("Error loading partners");
     }
   };
@@ -35,11 +44,34 @@ function ApprovalPending() {
     try {
       const result = await approvePartner(partnerId);
       if (result.status === 'success') {
-        loadPartnersList(); 
+        loadPartnersList();
         toast.success("partner approved")
       }
     } catch (error) {
-      console.error('Error approving partner:', error);
+      // console.error('Error approving partner:', error);
+      toast.error("error while approving the partner");
+    }
+  };
+
+  const downloadPartnerId = async (partnerId) => {
+    try {
+      const result = await showIdImage(partnerId);
+      if (imageUrls) {
+        setImageUrls(prev => ({ ...prev, [partnerId]: result })); // Store image URLs for each partner
+      }
+    } catch (error) {
+      toast.error("Error while loading the ID image");
+    }
+  };
+
+  const downloadPartnerProfile = async (partnerId) => {
+    try {
+      const result = await showProfileImage(partnerId);
+      if (imageProfileUrl) {
+        setImageProfileUrl(prev => ({ ...prev, [partnerId]: result })); // Store image URLs for each partner
+      }
+    } catch (error) {
+      toast.error("Error while loading the ID image");
     }
   };
 
@@ -54,6 +86,8 @@ function ApprovalPending() {
     );
     setFilteredPartners(filtered);
   };
+
+
 
   return (
     <div className='content'>
@@ -72,46 +106,45 @@ function ApprovalPending() {
         {filteredPartners.map((partner, index) => (
           <Col key={index} md={6} className="mb-4">
             <Card>
-              <Row noGutters>
+              <Row >
                 {/* Image Column */}
-                <Col md={4} style={{paddingLeft:'20px'}}>
-                <div
-                    style={{
-                      width: '150px',
-                      height: '50px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <ModalImage
-                      small={`${config.url}/admin/image/${partner.partnerId}`}
-                      large={`${config.url}/admin/image/${partner.partnerId}`}
-                      alt={`${partner.firstName} ${partner.lastName}`}
-                      className="img-fluid"
-                    />
-                      
+                <Col md={4} style={{ paddingLeft: '20px' }}>
+                  <div style={{ width: '150px', height: 'auto', overflow: 'hidden' }}>
+                    {imageUrls[partner.partnerId] ? (
+                      <ModalImage
+                        small={imageUrls[partner.partnerId]}
+                        large={imageUrls[partner.partnerId]}
+                        alt="Partner ID Card"
+                        className="img-fluid"
+                      />
+                    ) : (
+                      <img
+                        src="placeholder.jpg"
+                        alt="Partner ID Card"
+                        style={{ width: '100%', height: 'auto' }}
+                      />
+                    )}
                   </div>
-                  <CardText>Click on image to view</CardText>
-                  <CardTitle>Partner Id Card</CardTitle>
+                  <CardText>Partner ID Card</CardText>
 
-                  <div
-                    style={{
-                      width: '150px',
-                      height: '50px',
-                      overflow: 'hidden',
-                      marginTop: '50px'
-                    }}
-                  >
-                    <ModalImage
-                      small={`${config.url}/partner/image/${partner.partnerId}`}
-                      large={`${config.url}/partner/image/${partner.partnerId}`}
-                      alt={`${partner.firstName} ${partner.lastName}`}
-                      className="img-fluid"
-                    />
-                      
+                  <div style={{ width: '150px', height: 'auto', overflow: 'hidden' }}>
+                    {imageProfileUrl[partner.partnerId] ? (
+                      <ModalImage
+                        small={imageProfileUrl[partner.partnerId]}
+                        large={imageProfileUrl[partner.partnerId]}
+                        alt="Partner ID Card"
+                        className="img-fluid"
+                      />
+                    ) : (
+                      <img
+                        src="placeholder.jpg"
+                        alt="Partner profile image"
+                        style={{ width: '100%', height: 'auto' }}
+                      />
+                    )}
                   </div>
-                  <CardText>Click on image to view</CardText>
-                  <CardTitle>Partner Profile Image</CardTitle>
-               
+                  <CardText>Partner Profile Image</CardText>
+
                 </Col>
                 {/* Data Column */}
                 <Col md={8}>

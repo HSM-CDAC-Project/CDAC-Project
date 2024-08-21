@@ -8,11 +8,11 @@ function PartnerPasswordChange() {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
+  const partnerId = localStorage.getItem('partnerId')
   // get a hook to navigate
   // - navigate is referring a function which is used for navigation
   const navigate = useNavigate()
 
-    const partnerId = "P0001";
   // const partnerId = localStorage.getItem('partnerId') || '';
   console.log(partnerId);
 

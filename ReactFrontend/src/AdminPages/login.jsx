@@ -31,7 +31,7 @@ function LoginAdmin() {
         // Store customerId in local storage
         // localStorage.setItem('customerId', customerId);
         localStorage.setItem('jwt', jwt);
-        localStorage.setItem('msg', msg);
+        localStorage.setItem('empId', msg);
         // const { token } = result['data']
         // sessionStorage.setItem('token', token)
 

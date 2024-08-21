@@ -148,7 +148,7 @@ public class AdminController {
 			String otp = og.getRandomNumber();
 	        AdminLoginRespDTO loginResponse = new AdminLoginRespDTO(jwt, verifiedToken.getName(), otp);
 	        
-	        sendEmail(verifiedToken.getName(), mailSubject(5), "your otp is for login is "+otp);
+//	        sendEmail(verifiedToken.getName(), mailSubject(5), "your otp is for login is "+otp);
 
 	        return ResponseEntity.ok(loginResponse);
 

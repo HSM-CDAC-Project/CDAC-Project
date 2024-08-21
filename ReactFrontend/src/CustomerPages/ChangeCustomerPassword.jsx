@@ -8,12 +8,12 @@ function ChangeCustomerPassword() {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
+  const customerId = localStorage.getItem('customerId')
   // get a hook to navigate
   // - navigate is referring a function which is used for navigation
   const navigate = useNavigate()
 
 //   const customerId = localStorage.getItem('customerId') || '';
-const customerId = "C0001";
   console.log(customerId);
 
   const onCancel = () => {

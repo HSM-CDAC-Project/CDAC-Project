@@ -1,20 +1,19 @@
-
 import React, { useEffect, useState } from 'react';
-import { GetAllPartnerDetails, UpdatePartnerEmail, UpdatePartnerMobileNo } from '../services/Partner';
+import { GetAllPartnerDetails, UpdatePartnerEmail, UpdatePartnerMobileNo, showProfileImage } from '../services/Partner';
 import { toast } from 'react-toastify';
-import { Card, Row, Col, CardTitle, CardText, FormControl, Button } from 'react-bootstrap';
+import { Card, Row, Col, FormControl, Button } from 'react-bootstrap';
 import ModalImage from 'react-modal-image';
-import config from '../config';
-import { FaEdit } from 'react-icons/fa'; // Import the edit icon
+import { FaEdit } from 'react-icons/fa';
 
 function PartnerDetails() {
-  const partnerId = "P0001";
-  // const partnerId = localStorage.getItem('partnerId') || '';
   const [partnersDetails, setPartnersDetails] = useState([]);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isEditingMobile, setIsEditingMobile] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const [newMobile, setNewMobile] = useState('');
+  const [imageProfileUrl, setImageProfileUrl] = useState(''); // Single URL for the image
+
+  const partnerId = localStorage.getItem('partnerId');
 
   useEffect(() => {
     LoadPartnersDetails(partnerId).catch((error) => {
@@ -25,22 +24,21 @@ function PartnerDetails() {
   const LoadPartnersDetails = async (partnerId) => {
     try {
       const partnerData = await GetAllPartnerDetails(partnerId);
-      if (partnerData && typeof partnerData === 'object' && partnerData.partnerId) {
-        setPartnersDetails([partnerData]); // Wrap the object in an array
-      } else if (partnerData.data && Array.isArray(partnerData.data) && partnerData.data.length > 0) {
-        setPartnersDetails(partnerData.data); // If data is an array
+      if (partnerData) {
+        setPartnersDetails([partnerData]); // Set details for the single partner
+        downloadPartnerProfile(partnerData.partnerId); // Download profile image for the single partner
       } else {
-        toast.error("Empty list or invalid data format");
+        toast.error("Invalid partner data format");
       }
     } catch (error) {
-      console.error('Error loading partners list:', error);
-      toast.error("Error loading partners");
+      console.error('Error loading partner details:', error);
+      toast.error("Error loading partner details");
     }
   };
 
   const handleEmailUpdate = async () => {
     try {
-      const response = await UpdatePartnerEmail({ partnerId, email: newEmail });
+      await UpdatePartnerEmail({ partnerId, email: newEmail });
       toast.success("Email updated successfully");
       setIsEditingEmail(false);
       LoadPartnersDetails(partnerId); // Reload the details
@@ -52,13 +50,22 @@ function PartnerDetails() {
 
   const handleMobileUpdate = async () => {
     try {
-      const response = await UpdatePartnerMobileNo({ partnerId, mobileNo: newMobile });
+      await UpdatePartnerMobileNo({ partnerId, mobileNo: newMobile });
       toast.success("Mobile number updated successfully");
       setIsEditingMobile(false);
       LoadPartnersDetails(partnerId); // Reload the details
     } catch (error) {
       console.error('Error updating mobile number:', error);
       toast.error("Error updating mobile number");
+    }
+  };
+
+  const downloadPartnerProfile = async (partnerId) => {
+    try {
+      const result = await showProfileImage(partnerId);
+      setImageProfileUrl(result); // Set the single image URL directly
+    } catch (error) {
+      toast.error("Error while loading the profile image");
     }
   };
 
@@ -70,23 +77,29 @@ function PartnerDetails() {
           <Col key={index} md={6} className="mb-4">
             <Card>
               <Row noGutters>
-                <Col md={4} style={{ paddingLeft: '20px', width : '300px' , height : '200px' }}>
-                  <div style={{ width: '150px', height: '50px', overflow: 'hidden', marginTop: '50px' }}>
-                    <ModalImage
-                      small={`${config.url}/partner/image/${partner.partnerId}`}
-                      large={`${config.url}/partner/image/${partner.partnerId}`}
-                      alt={`${partner.firstName} ${partner.lastName}`}
-                      className="img-fluid"
-                    />
+                <Col md={4} style={{ paddingLeft: '20px', width: '300px', height: '200px' }}>
+                  <div style={{ width: '150px', height: 'auto', overflow: 'hidden' }}>
+                    {imageProfileUrl ? (
+                      <ModalImage
+                        small={imageProfileUrl}
+                        large={imageProfileUrl}
+                        alt="Partner profile image"
+                        className="img-fluid"
+                      />
+                    ) : (
+                      <img
+                        src="placeholder.jpg"
+                        alt="Partner profile image"
+                        style={{ width: '100%', height: 'auto' }}
+                      />
+                    )}
                   </div>
-                  <CardText>Click on image to view</CardText>
-                  <CardTitle>Partner Profile Image</CardTitle>
                 </Col>
-                <Col md={8} style={{width : '600px'}}>
+                <Col md={8} style={{ width: '600px' }}>
                   <Card.Body>
                     <Card.Title>{partner.firstName} {partner.lastName}</Card.Title>
                     <Card.Text>
-                      Email: 
+                      Email:
                       {isEditingEmail ? (
                         <>
                           <FormControl

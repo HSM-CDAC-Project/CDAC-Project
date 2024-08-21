@@ -10,12 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function FetchAssignedOrders() {
   
-    const partnerId = localStorage.getItem('partnerId') || '';
-    // const partnerId = "P0001";
     const [orderDetails, setOrderDetails] = useState([]);
-        
-    
-  
+    const partnerId = localStorage.getItem('partnerId')
 
        const loadAssignedServices = async (partnerId) => {
         try {

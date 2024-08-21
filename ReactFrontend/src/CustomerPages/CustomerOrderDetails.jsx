@@ -4,8 +4,9 @@ import { Card, Row, Col, CardTitle, CardText, FormControl, Button } from 'react-
 import { GetAllOrderDetails } from '../services/Customer';
 
 function CustomerOrderDetails() {
-    const customerId = "C0001";
     const [orderDetails, setOrderDetails] = useState([]);
+
+    const customerId = localStorage.getItem('customerId')
 
     useEffect(()=>{
         LoadOrderDetails(customerId).catch((error)=> {

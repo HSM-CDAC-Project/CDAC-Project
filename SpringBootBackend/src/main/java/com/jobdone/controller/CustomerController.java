@@ -234,6 +234,7 @@ public class CustomerController {
 //			return ResponseEntity.ok(customerService.authenticateUser(request));
 //		}
 	  
+	  
 		@PostMapping("/login")
 		public ResponseEntity<?> authenticateUser(@RequestBody 
 				@Valid CustomerLoginDTO request) {

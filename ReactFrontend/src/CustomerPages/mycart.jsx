@@ -16,8 +16,9 @@ const MyCart = () => {
     const [deliveryDate, setDeliveryDate] = useState(null);
     const [addresses, setAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState({});
-    const customerId = localStorage.getItem('customerId');
 
+    const customerId = localStorage.getItem('customerId')
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,7 +51,7 @@ const MyCart = () => {
         const selectedAddressId = event.target.value;
         const selectedAddressByID = addresses.filter((address) => {
             console.log(`${address} -> ${address.id} -> ${selectedAddressId}`);
-            return address.id == selectedAddressId;
+            return address.id === selectedAddressId;
         });
         console.log('Selected Address ID:', selectedAddressByID);
         setSelectedAddress(selectedAddressByID[0]);

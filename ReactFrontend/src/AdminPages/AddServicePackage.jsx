@@ -12,8 +12,12 @@ function AddServicePackage() {
     const [packagePrice, setPackagePrice] = useState('');
 
     const serviceOptions = {
-        Home: ['Plumbing', 'Cleaning'],
-        Business: ['Transport', 'Inventory']
+        HomeCleaning: ['BATH_CLEAN', 'KITCH_CLEAN','HOME_CLEAN','ROOM_CLEAN'],
+        HomeService: ['GARDENING', 'HOME_DECO','PEST_CONT'],
+        Maintenance: ['AC_REAPIR', 'REFRI_REPAIR','WM_REPAIR'],
+        other: ['ELECTRICIAN', 'CARPENTER','PLUMBER']
+
+
     };
 
 
@@ -65,8 +69,12 @@ function AddServicePackage() {
                                 value={categoryTitle}
                             >
                                 <option value=''>Select Category</option>
-                                <option value='Home'>Home</option>
-                                <option value='Business'>Business</option>
+                                <option value='HomeCleaning'>Home Cleaning</option>
+                                <option value='HomeService'>Home Services</option>
+                                <option value='Maintenance'>Appl Maintenance</option>
+                                <option value='other'>Other</option>
+
+
                             </select>
                         </div>
 

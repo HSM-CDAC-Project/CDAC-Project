@@ -5,13 +5,14 @@ import { Card, Row, Col, CardTitle, CardText, FormControl, Button } from 'react-
 import { FaEdit } from 'react-icons/fa'; // Import the edit icon
 
 function CustomerDetails() {
-  const customerId = "C0001";
   // const customerId = localStorage.getItem('customerId') || '';
   const [customerDetails, setCustomerDetails] = useState([]);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isEditingMobile, setIsEditingMobile] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const [newMobile, setNewMobile] = useState('');
+
+  const customerId = localStorage.getItem('customerId')
 
   useEffect(() => {
     LoadCustomerDetails(customerId).catch((error) => {
