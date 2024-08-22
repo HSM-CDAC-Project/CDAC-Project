@@ -138,10 +138,19 @@ const RegisterPartner = () => {
                     required
                   >
                     <option value="">Select Service Title</option>
-                    <option value="CLEANING">CLEANING</option>
-                    <option value="PLUMBING">PLUMBING</option>
-                    <option value="ELECTRICAL">ELECTRICAL</option>
-                    <option value="CARPENTRY">CARPENTRY</option>
+                    <option value="ELECTRICIAN">ELECTRICIAN</option>
+                    <option value="GARDENING">GARDENING</option>
+                    <option value="BATH_CLEAN">BATHROOM CLEANING</option>
+                    <option value="HOME_DECO">HOME DECOR</option>
+                    <option value="KITCH_CLEAN">KITCHEN CLEANING</option>
+                    <option value="PEST_CONT">PEST CONTROL</option>
+                    <option value="PLUMBER">PLUMBER</option>
+                    <option value="HOME_CLEAN">HOME CLEANING</option>
+                    <option value="ROOM_CLEAN">ROOM CLEANING</option>          
+                    <option value="AC_REAPIR">AC REPAIR</option>      
+                    <option value="REFRI_REPAIR">REFRIGERATOR REPAIR</option>      
+                    <option value="WM_REPAIR">WM_REPAIR</option>     
+
                   </Form.Control>
                 </Form.Group>
               </Col>

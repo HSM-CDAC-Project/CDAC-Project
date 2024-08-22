@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 const OrderSuccess = () => {
     const navigate = useNavigate();
 
-    // const handleGoBackToHome = () => {
-        // navigate('/');
-    // }
+    const handleGoBackToHome = () => {
+        navigate('/');
+    }
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
@@ -17,9 +17,9 @@ const OrderSuccess = () => {
                     <Card.Text>
                         Thank you for your purchase. Your order has been successfully placed and will be processed shortly.
                     </Card.Text>
-                    {/* <Button variant="success" onClick={handleGoBackToHome}> */}
-                        {/* Go Back to Home */}
-                    {/* </Button> */}
+                    <Button variant="success" onClick={handleGoBackToHome}> 
+                        Go Back to Home
+                     </Button>
                 </Card.Body>
             </Card>
         </div>
